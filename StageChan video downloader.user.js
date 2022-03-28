@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         StageChan video downloader
 // @namespace    https://github.com/iamgqr/
-// @version      0.3.2
+// @version      0.3.3
 // @description  various video downloading
 // @author       StageChan
 // @match        https://www.nicovideo.jp/watch/*
@@ -51,7 +51,7 @@ const do_download = (video, filename) => {
     triggerDownload(video_blob_url, filename);
     if ($("#video_download_close_tab").prop('checked')) {
         v.downloading = false;
-        setTimeout(window.close(), 5000);
+        setTimeout(() => {window.close();}, 5000);
     }
 };
 
@@ -141,7 +141,9 @@ const onclick = (f) => {
             $("#video_download").text("未获取视频源。");
             return;
         }
+        console.log(v);
         if (v.downloading) {
+
             return;
         }
         v.downloading = true;
@@ -152,7 +154,7 @@ const onclick = (f) => {
         };
         downloading_message("下载中...");
         try {
-            f();
+            await f();
         } catch (e) {
             console.log(e);
             $("#video_download").text("下载遇到错误！请尝试拖动进度条或刷新页面。");
